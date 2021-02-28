@@ -9,7 +9,7 @@ let editedTodo; // edited Todo
 let popupInput; // text typed into input in the popup
 let addPopupBtn; // "ADD" button in popup
 let closeTodoBtn; // button to close the popup
-
+let idNumber = 0;
 
 
 const main = () => {
@@ -35,13 +35,16 @@ const prepareDOMEvents = () => {
     addBtn.addEventListener('click', addNewTask);
     ulList.addEventListener('click', checkClick);
     closeTodoBtn.addEventListener('click', closePopup);
+    addPopupBtn.addEventListener('click', changeTodo);
  };
 
 //adds new tasks
 const addNewTask = () => {
     if (todoInput.value !== '') {
+        idNumber++;
         newTask = document.createElement('li');
         newTask.innerText = todoInput.value;
+        newTask.setAttribute('id', `todo-${idNumber}`);
         ulList.appendChild(newTask);
 
         todoInput.value = '';
@@ -79,18 +82,33 @@ const checkClick = (e) => {
         e.target.closest('li').classList.toggle('completed');
         e.target.closest('button').classList.toggle('completed');
     } else if (e.target.closest('button').className === 'edit') {
-        editTask();
+        editTask(e);
     } else if (e.target.closest('button').className === 'delete') {
         console.log('delete');
     }
 };
 
-const editTask = () => {
+const editTask = (e) => {
+    const oldTodo = e.target.closest('li').id;
+    editedTodo = document.getElementById(oldTodo);  
+    popupInput.value = editedTodo.firstChild.textContent;
+
     popup.style.display = 'flex';
-}
+};
+
+const changeTodo = () => {
+    if (popupInput.value !== '') {
+        editedTodo.firstChild.textContent = popupInput.value;
+        popup.style.display = 'none';
+        popupInfo.innerText = '';
+    } else {
+        popupInfo.innerText = 'You need to provide some content!';
+    };
+};
 
 const closePopup = () => {
     popup.style.display = 'none';
+    popupInfo.innerText = '';
 }
 
 document.addEventListener('DOMContentLoaded', main);
