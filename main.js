@@ -84,7 +84,7 @@ const checkClick = (e) => {
     } else if (e.target.closest('button').className === 'edit') {
         editTask(e);
     } else if (e.target.closest('button').className === 'delete') {
-        console.log('delete');
+        deleteTask(e);
     }
 };
 
@@ -110,5 +110,10 @@ const closePopup = () => {
     popup.style.display = 'none';
     popupInfo.innerText = '';
 }
+
+const deleteTask = (e) => {
+    const deleteTodo = e.target.closest('li');
+    deleteTodo.remove();
+}   
 
 document.addEventListener('DOMContentLoaded', main);
