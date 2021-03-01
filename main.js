@@ -10,6 +10,7 @@ let popupInput; // text typed into input in the popup
 let addPopupBtn; // "ADD" button in popup
 let closeTodoBtn; // button to close the popup
 let idNumber = 0;
+let allTasks;
 
 
 const main = () => {
@@ -28,6 +29,7 @@ const prepareDOMElements = () => {
     popupInput = document.querySelector('.popupInput'); 
     addPopupBtn = document.querySelector('.accept'); 
     closeTodoBtn = document.querySelector('.cancel'); 
+    allTasks = ulList.getElementsByTagName('li');
 };
 
 //add event listeners
@@ -52,8 +54,9 @@ const addNewTask = () => {
         createToolsArea();
     } else {
         alertInfo.innerText = 'Enter the content of the task!';
-    }
+    };
 };
+
 
 const createToolsArea = () => {
     const toolsPanel = document.createElement('div');
@@ -85,7 +88,7 @@ const checkClick = (e) => {
         editTask(e);
     } else if (e.target.closest('button').className === 'delete') {
         deleteTask(e);
-    }
+    };
 };
 
 const editTask = (e) => {
@@ -96,11 +99,11 @@ const editTask = (e) => {
     popup.style.display = 'flex';
 };
 
+
 const changeTodo = () => {
     if (popupInput.value !== '') {
         editedTodo.firstChild.textContent = popupInput.value;
-        popup.style.display = 'none';
-        popupInfo.innerText = '';
+        closePopup();
     } else {
         popupInfo.innerText = 'You need to provide some content!';
     };
@@ -114,6 +117,10 @@ const closePopup = () => {
 const deleteTask = (e) => {
     const deleteTodo = e.target.closest('li');
     deleteTodo.remove();
-}   
+
+    if (allTasks.length === 0) {
+        alertInfo.innerText = 'No tasks on the list.';
+    };
+};
 
 document.addEventListener('DOMContentLoaded', main);
